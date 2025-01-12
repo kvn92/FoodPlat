@@ -1,0 +1,6 @@
+projectKey=FoodPlat
+serverUrl=http://localhost:9001
+serverVersion=24.12.0.100206
+dashboardUrl=http://localhost:9001/dashboard?id=FoodPlat
+ceTaskId=cec29c4e-9cea-4e97-a1f7-3de23c5f2b61
+ceTaskUrl=http://localhost:9001/api/ce/task?id=cec29c4e-9cea-4e97-a1f7-3de23c5f2b61

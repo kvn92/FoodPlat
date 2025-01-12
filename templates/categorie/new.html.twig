@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nouvelle catégorie{% endblock %}
+
+{% block body %}
+<h1>Ajouter une nouvelle catégorie</h1>
+
+
+    <p> <a href="{{ path('categorie.list') }}"> Retour</a></p>
+
+{% if errors is not empty %}
+    <div class="alert alert-danger">
+        <ul>
+            {% for error in errors %}
+                <li>{{ error.message }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+{% endif %}
+
+{{ form(form, {'method': 'POST'}) }}
+{% endblock %}

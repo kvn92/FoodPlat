@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+<p> <a href="{{ path('categorie.new')}}">Ajouter</a></p>
+<table class="table table-striped">
+    <thead>
+
+    <p>{{ nombreCategorie }} {{ secteur }}</p>
+        <tr>
+            <th>Nom</th>
+            <th>Statut</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for categories in categorie %}
+            <tr>
+                <td> il y a : {{ categories.categorie }} </td>
+                <td>
+                    {% if categories.statutCategorie %}
+                        <span class="badge bg-success">Actif</span>
+                        <a href="{{ path('categorie.toggle_statut', { id: categories.id }) }}" class="btn btn-danger btn-sm">
+                            Désactiver
+                        </a>
+                    {% else %}
+                        <span class="badge bg-danger">Pause</span>
+                        <a href="{{ path('categorie.toggle_statut', { id: categories.id }) }}" class="btn btn-success btn-sm">
+                            Activer
+                        </a>
+                    {% endif %}
+                </td>
+                <td>
+                    <a href="{{ path('categorie.show', { id: categories.id }) }}" class="btn btn-primary btn-sm">Voir</a>
+                    <a href="{{ path('categorie.edit', { id: categories.id }) }}" class="btn btn-secondary btn-sm">Modifier</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="3" class="text-center">Aucune categorie trouvée.</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

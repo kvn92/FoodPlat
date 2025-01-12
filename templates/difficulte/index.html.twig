@@ -1,0 +1,48 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+
+    <p>{{ nombreDifficulte }} {{ secteur }}</p>
+<p> <a href="{{ path('difficulte.new')}}">Ajouter</a></p>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Nom</th>
+            <th>Statut</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+
+
+        {% for difficulte in difficultes %}
+            <tr>
+                <td>{{ difficulte.difficulte }}</td>
+                <td>
+                    {% if difficulte.statutDifficulte %}
+                        <span class="badge bg-success">Actif</span>
+                        <a href="{{ path('difficulte.toggle_status', { id: difficulte.id }) }}" class="btn btn-danger btn-sm">
+                            Désactiver
+                        </a>
+                    {% else %}
+                        <span class="badge bg-danger">Pause</span>
+                        <a href="{{ path('difficulte.toggle_status', { id: difficulte.id }) }}" class="btn btn-success btn-sm">
+                            Activer
+                        </a>
+                    {% endif %}
+                </td>
+                <td>
+                    <a href="{{ path('difficulte.show', { id: difficulte.id }) }}" class="btn btn-primary btn-sm">Voir</a>
+                    <a href="{{ path('difficulte.edit', { id: difficulte.id }) }}" class="btn btn-secondary btn-sm">Modifier</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="3" class="text-center">Aucune difficulté trouvée.</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
