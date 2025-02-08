@@ -1,0 +1,56 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<div class="container mt-4">
+    <h1 class="text-center mb-4">{{ nombres }} {{ secteur }}</h1>
+
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <a href="{{ path('ingredient.new') }}" class="btn btn-success">
+            <i class="fas fa-plus"></i> Ajouter un ingrédient
+        </a>
+    </div>
+
+    <table class="table table-hover shadow-sm">
+        <thead class="table-dark text-center">
+            <tr>
+                <th>Nom</th>
+                <th>Statut</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for ingredient in ingredients %}
+                <tr>
+                    <td class="align-middle text-center">{{ ingredient.nomIngredient }}</td>
+                    <td class="align-middle text-center">
+                        {% if ingredient.statutIngredient %}
+                            <a href="{{ path('ingredient.toggle_statut', { id: ingredient.id }) }}" class="badge bg-success text-decoration-none">
+                                Actif
+                            </a>
+                        {% else %}
+                            <a href="{{ path('ingredient.toggle_statut', { id: ingredient.id }) }}" class="badge bg-danger text-decoration-none">
+                                Inactif
+                            </a>
+                        {% endif %}
+                    </td>
+                    <td class="d-flex justify-content-center gap-2">
+                        <a href="{{ path('ingredient.show', { id: ingredient.id }) }}" class="btn btn-primary btn-sm">
+                            <i class="fas fa-eye"></i> Voir
+                        </a>
+                        <a href="{{ path('ingredient.edit', { id: ingredient.id }) }}" class="btn btn-secondary btn-sm">
+                            <i class="fas fa-edit"></i> Modifier
+                        </a>
+                        <form action="{{ path('ingredient.delete', { id: ingredient.id }) }}" method="post" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cet ingrédient ?');">
+                            {{ form(deleteForms[ingredient.id]) }}
+                        </form>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="3" class="text-center text-muted">Aucun ingrédient trouvé.</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

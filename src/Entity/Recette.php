@@ -9,21 +9,24 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Positive;
 use Symfony\Component\Validator\Constraints\PositiveOrZero;
+
+#[UniqueEntity('titreRecette', message: '{{ value }} est déjà enregistré.')]
 
 #[ORM\Entity(repositoryClass: RecetteRepository::class)]
 class Recette
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column]
+    #[ORM\Column(type: 'integer',name:'id_recette')]
     private ?int $id = null;
 
     #[ORM\Column(type: 'string', length: 100, unique: true)]
-    #[NotBlank]
+    #[NotBlank()]
     #[Assert\Length(
         min: 2,
         max: 100,
@@ -32,13 +35,17 @@ class Recette
     )]
     private ?string $titreRecette = null;
 
-    #[ORM\ManyToOne(inversedBy: 'recettes')]
+    #[ORM\ManyToOne(targetEntity:Categorie::class,inversedBy: 'recettes')]
+    #[ORM\JoinColumn(name: 'categorie_id', referencedColumnName: 'id_categorie')]
     private ?Categorie $categorie = null;
 
-    #[ORM\ManyToOne(inversedBy: 'recettes')]
+
+    #[ORM\ManyToOne(targetEntity:Difficulte::class,inversedBy: 'recettes')]
+    #[ORM\JoinColumn(name: 'difficulte_id', referencedColumnName: 'id_difficulte')]
     private ?Difficulte $difficulte = null;
 
-    #[ORM\ManyToOne(inversedBy: 'recettes')]
+    #[ORM\ManyToOne(targetEntity:TypeRepas::class,inversedBy: 'recettes')]
+    #[ORM\JoinColumn(name: 'type_repas_id', referencedColumnName: 'id_type_repas')]
     private ?TypeRepas $typeRepas = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
@@ -56,7 +63,6 @@ class Recette
     private ?bool $statutRecette = null;
 
     #[ORM\Column(type:'integer')]
-    #[NotBlank()]
     #[Positive()]
     private ?int $duree = null;
 
@@ -64,7 +70,52 @@ class Recette
      * @var Collection<int, Commentaire>
      */
     #[ORM\OneToMany(targetEntity: Commentaire::class, mappedBy: 'recette')]
+    #[ORM\JoinColumn(name: 'commentaire_id', referencedColumnName: 'id_commentaire')]
     private Collection $commentaires;
+
+    /**
+     * @var Collection<int, LikeRecette>
+     */
+    #[ORM\OneToMany(targetEntity: LikeRecette::class, mappedBy: 'recette')]
+    #[ORM\JoinColumn(name: 'like_recette_id', referencedColumnName: 'id_like_recette')]
+    private Collection $likeRecettes;
+
+    /**
+     * @var Collection<int, Etape>
+     */
+    #[ORM\OneToMany(targetEntity: Etape::class, mappedBy: 'recette')]
+    #[ORM\JoinColumn(name: 'etape_id', referencedColumnName: 'id_etape')]
+    private Collection $etapes;
+
+    
+    #[ORM\ManyToOne(targetEntity: Pays::class, inversedBy: 'recettes')]
+    #[ORM\JoinColumn(name: 'pays_id', referencedColumnName: 'id_pays')]
+    private ?Pays $pays = null;
+
+
+    #[ORM\ManyToOne(targetEntity:Viande::class,inversedBy: 'recettes')]
+    #[ORM\JoinColumn(name: 'viande_id', referencedColumnName: 'id_viande')]
+    private ?Viande $viande = null;
+
+    #[ORM\ManyToOne(targetEntity:Ingredient::class,inversedBy: 'recettes')]
+    #[ORM\JoinColumn(name: 'ingredient_id', referencedColumnName: 'id_ingredient')]
+    private ?Ingredient $ingredient = null;
+
+
+    #[ORM\ManyToOne(targetEntity:Utilisateur::class,inversedBy: 'recettes')]
+    #[ORM\JoinColumn(name: 'utilisateur_id', referencedColumnName: 'id_utilisateur')]
+    private ?Utilisateur $utilisateur = null;
+
+    /**
+     * @var Collection<int, Favori>
+     */
+    #[ORM\OneToMany(targetEntity: Favori::class, mappedBy: 'recette')]
+    private Collection $favoris;
+
+
+  
+
+
     
     public function __construct()
     {
@@ -72,6 +123,9 @@ class Recette
         $this->nbLike = 0;
         $this->statutRecette = false;
         $this->commentaires = new ArrayCollection();
+        $this->likeRecettes = new ArrayCollection();
+        $this->etapes = new ArrayCollection();
+        
         
     }
 
@@ -123,6 +177,9 @@ class Recette
         $this->typeRepas = $typeRepas;
         return $this;
     }
+
+
+   
 
     public function getDatePublication(): ?\DateTimeInterface
     {
@@ -181,6 +238,8 @@ class Recette
         return $this;
     }
 
+    
+
     /**
      * @return Collection<int, Commentaire>
      */
@@ -210,4 +269,143 @@ class Recette
 
         return $this;
     }
+
+    /**
+     * @return Collection<int, LikeRecette>
+     */
+    public function getLikeRecettes(): Collection
+    {
+        return $this->likeRecettes;
+    }
+
+    public function addLikeRecette(LikeRecette $likeRecette): static
+    {
+        if (!$this->likeRecettes->contains($likeRecette)) {
+            $this->likeRecettes->add($likeRecette);
+            $likeRecette->setRecette($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLikeRecette(LikeRecette $likeRecette): static
+    {
+        if ($this->likeRecettes->removeElement($likeRecette)) {
+            // set the owning side to null (unless already changed)
+            if ($likeRecette->getRecette() === $this) {
+                $likeRecette->setRecette(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Etape>
+     */
+    public function getEtapes(): Collection
+    {
+        return $this->etapes;
+    }
+
+    public function addEtape(Etape $etape): static
+    {
+        if (!$this->etapes->contains($etape)) {
+            $this->etapes->add($etape);
+            $etape->setRecette($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEtape(Etape $etape): static
+    {
+        if ($this->etapes->removeElement($etape)) {
+            // set the owning side to null (unless already changed)
+            if ($etape->getRecette() === $this) {
+                $etape->setRecette(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getPays(): ?Pays
+    {
+        return $this->pays;
+    }
+
+    public function setPays(?Pays $pays): static
+    {
+        $this->pays = $pays;
+
+        return $this;
+    }
+
+    public function getViande(): ?Viande
+    {
+        return $this->viande;
+    }
+
+    public function setViande(?Viande $viande): static
+    {
+        $this->viande = $viande;
+
+        return $this;
+    }
+
+    public function getIngredient(): ?Ingredient
+    {
+        return $this->ingredient;
+    }
+
+    public function setIngredient(?Ingredient $ingredient): static
+    {
+        $this->ingredient = $ingredient;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Favori>
+     */
+    public function getFavoris(): Collection
+    {
+        return $this->favoris;
+    }
+
+    public function addFavori(Favori $favori): static
+    {
+        if (!$this->favoris->contains($favori)) {
+            $this->favoris->add($favori);
+            $favori->setRecette($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFavori(Favori $favori): static
+    {
+        if ($this->favoris->removeElement($favori)) {
+            // set the owning side to null (unless already changed)
+            if ($favori->getRecette() === $this) {
+                $favori->setRecette(null);
+            }
+        }
+
+        return $this;
+    }
+    
+    public function getUtilisateur(): ?Utilisateur
+    {
+        return $this->utilisateur;
+    }
+
+    public function setUtilisateur(?Utilisateur $utilisateur): static
+    {
+        $this->utilisateur = $utilisateur;
+
+        return $this;
+    }
+
 }

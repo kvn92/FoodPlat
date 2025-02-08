@@ -27,6 +27,9 @@ class CommentaireType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Commentaire::class,
+            'csrf_protection' => false, // ✅ Active la protection CSRF
+            'csrf_field_name' => '_token', 
+            'csrf_token_id' => 'commentaire_item',
         ]);
     }
 }

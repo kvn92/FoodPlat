@@ -1,22 +1,19 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello RecetteController!{% endblock %}
+{% block title %}Gestion des Recettes{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
+<div class="container mt-4">
+    <h1 class="text-center mb-4">{{ nombres }} {{ secteur }}</h1>
 
-<div class="example-wrapper">
-    <h1>Liste des Recettes - {{ titre }}</h1>
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <a href="{{ path('recette.new') }}" class="btn btn-success">
+            <i class="fas fa-plus"></i> Ajouter une recette
+        </a>
+    </div>
 
-    <p>Nombre total de recettes : <strong>{{ nombreRecette }}</strong></p>
-
-    <p><a href="{{ path('recette.new') }}">Ajouter</a></p>
-
-    <table>
-        <thead>
+    <table class="table table-hover shadow-sm">
+        <thead class="table-dark text-center">
             <tr>
                 <th>Titre</th>
                 <th>Catégorie</th>
@@ -31,29 +28,44 @@
         <tbody>
             {% for recette in recettes %}
                 <tr>
-                    <td>{{ recette.titreRecette }}</td>
-                    <td>{{ recette.categorie ? recette.categorie.categorie : 'Non spécifiée' }}</td>
-                    <td>{{ recette.typeRepas ? recette.typeRepas.typeRepas : 'Non spécifié' }}</td>
-                    <td>{{ recette.difficulte ? recette.difficulte.difficulte : 'Non spécifiée' }}</td>
-                    <td>{{ recette.duree }}</td>
-                    <td>
+                    <td class="align-middle text-center">{{ recette.titreRecette }}</td>
+                    <td class="align-middle text-center">
+                        {{ recette.categorie ? recette.categorie.categorie : 'Non spécifiée' }}
+                    </td>
+                    <td class="align-middle text-center">
+                        {{ recette.typeRepas ? recette.typeRepas.typeRepas : 'Non spécifié' }}
+                    </td>
+                    <td class="align-middle text-center">
+                        {{ recette.difficulte ? recette.difficulte.difficulte : 'Non spécifiée' }}
+                    </td>
+                    <td class="align-middle text-center">{{ recette.duree }}</td>
+                    <td class="align-middle text-center">
                         {% if recette.statutRecette %}
-                           
-                            <a href="{{ path('recette.toggle_statut', { id: recette.id }) }}" class="btn btn-danger btn-sm">
-                               <span class="badge bg-danger">Active</span>
+                            <a href="{{ path('recette.toggle_statut', { id: recette.id }) }}" class="badge bg-success text-decoration-none">
+                                Actif
                             </a>
                         {% else %}
-                           
-                            <a href="{{ path('recette.toggle_statut', { id: recette.id }) }}" class="btn btn-success btn-sm">
-                             <span class="badge bg-success">Pause</span>
+                            <a href="{{ path('recette.toggle_statut', { id: recette.id }) }}" class="badge bg-danger text-decoration-none">
+                                Inactif
                             </a>
                         {% endif %}
                     </td>
-                    <td>{{ recette.datePublication | date('d-m-Y H:i:s') }}</td>
-                    <td>
-                        <a href="{{ path('recette.show', { id: recette.id }) }}" class="btn btn-sm btn-primary">Voir</a>
-                        <a href="{{ path('recette.edit', { id: recette.id }) }}" class="btn btn-sm btn-warning">Modifier</a>
+                    <td class="align-middle text-center">{{ recette.datePublication | date('d-m-Y H:i:s') }}</td>
+                    <td class="d-flex justify-content-center gap-2">
+                        <a href="{{ path('recette.show', { id: recette.id }) }}" class="btn btn-primary btn-sm">
+                            <i class="fas fa-eye"></i> Voir
+                        </a>
+                        <a href="{{ path('recette.edit', { id: recette.id }) }}" class="btn btn-secondary btn-sm">
+                            <i class="fas fa-edit"></i> Modifier
+                        </a>
+                        <form action="{{ path('recette.delete', { id: recette.id }) }}" method="post">
+                            {{ form(deleteForms[recette.id]) }}
+                        </form>
                     </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="8" class="text-center text-muted">Aucune recette trouvée.</td>
                 </tr>
             {% endfor %}
         </tbody>

@@ -16,18 +16,21 @@ class DifficulteType extends AbstractType
     {
         $builder
             ->add('difficulte',TextType::class,['label'=>'Difficulte',
-            'required'=>true,])
-            ->add('statutDifficulte',ChoiceType::class,['label'=>'Statuts',
+            'required'=>true,]);
+            if($options['is_edit']){
+                $builder ->add('statutDifficulte',ChoiceType::class,['label'=>'Statuts',
                 'choices'=>[
                     'Actif'=>true,
                     'Pause'=>false,
                 ],'expanded'=>true,
                 'multiple'=>false
-                ])
+            ]);
 
-            ->add('submit',SubmitType::class,[
-                'label'=>$options['boutonForm']?
-                'Ajouter':'Modifier'])
+            }
+          
+
+            $builder->add('submit',SubmitType::class,[
+                'label'=>'Enregistrer'])
         ;
     }
 
@@ -35,7 +38,10 @@ class DifficulteType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Difficulte::class,
-            'boutonForm'=>true
+            'is_edit'=>false,
+            'csrf_protection' => true, // ✅ Active la protection CSRF
+            'csrf_field_name' => '_token', 
+            'csrf_token_id' => 'difficulte_item',
         ]);
     }
 }

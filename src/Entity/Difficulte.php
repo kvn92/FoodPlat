@@ -6,16 +6,18 @@ use App\Repository\DifficulteRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
-#[ORM\Entity(repositoryClass: DifficulteRepository::class)]
+#[UniqueEntity('difficulte',message:'{{ value }} est déjà enregistré')]
 
+#[ORM\Entity(repositoryClass: DifficulteRepository::class)]
 class Difficulte
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type:'integer')]
+    #[ORM\Column(type:'integer',name:'id_difficulte', unique:true)]
     private ?int $id = null;
 
     #[ORM\Column(type:'string',length: 50,unique:true)]
@@ -29,7 +31,7 @@ class Difficulte
     private ?string $difficulte = null;
 
     #[ORM\Column(type:'boolean')]
-    private ?bool $statutDifficulte = null;
+    private ?bool $statutDifficulte = false;
 
     /**
      * @var Collection<int, Recette>

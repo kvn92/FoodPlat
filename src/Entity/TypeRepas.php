@@ -6,15 +6,17 @@ use App\Repository\TypeRepasRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
+#[UniqueEntity('typeRepas', message: '{{ value }} est déjà enregistré.')]
 #[ORM\Entity(repositoryClass: TypeRepasRepository::class)]
 class TypeRepas
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type:'integer')]
+    #[ORM\Column(type:'integer',name:'id_type_repas',unique:true)]
     private ?int $id = null;
 
     #[ORM\Column(type:'string',length: 50,unique:true)]
@@ -28,7 +30,7 @@ class TypeRepas
     private ?string $typeRepas = null;
 
     #[ORM\Column(type:'boolean')]
-    private ?bool $statutTypeRepas = null;
+    private ?bool $statutTypeRepas = false;
 
     /**
      * @var Collection<int, Recette>

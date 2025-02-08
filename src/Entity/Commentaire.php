@@ -16,8 +16,8 @@ class Commentaire
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type:'integer')]
-    private ?int $id = null;
+    #[ORM\Column(type:'integer',name:'id_commentaire')]
+    private ?int $idCommentaire = null;
 
     #[ORM\Column(Types::TEXT,length:300)]
     #[NotBlank]
@@ -38,7 +38,12 @@ class Commentaire
 
    
     #[ORM\ManyToOne(inversedBy: 'commentaires')]
+    #[ORM\JoinColumn(name: "recette_id", referencedColumnName: "id_recette")]
     private ?Recette $recette = null;
+
+    #[ORM\ManyToOne(inversedBy: 'commentaires')]
+    #[ORM\JoinColumn(name: "utilisateur_id", referencedColumnName: "id_utilisateur")]
+    private ?Utilisateur $utilisateur = null;
 
     public function __construct()
     {
@@ -48,7 +53,7 @@ class Commentaire
 
     public function getId(): ?int
     {
-        return $this->id;
+        return $this->idCommentaire;
     }
 
     public function getCommentaire(): ?string
@@ -95,6 +100,18 @@ class Commentaire
     public function setRecette(?Recette $recette): static
     {
         $this->recette = $recette;
+
+        return $this;
+    }
+
+    public function getUtilisateur(): ?Utilisateur
+    {
+        return $this->utilisateur;
+    }
+
+    public function setUtilisateur(?Utilisateur $utilisateur): static
+    {
+        $this->utilisateur = $utilisateur;
 
         return $this;
     }

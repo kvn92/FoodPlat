@@ -27,7 +27,7 @@ class RecetteRepository extends ServiceEntityRepository
      * @return int
      */
     public function countRecette(){
-        return $this->repositoryService->countEntities(Recette::class, 'r');    
+        return $this->repositoryService->countEntities(Recette::class, 'r','id');    
     }
 
 //    /**

@@ -20,6 +20,8 @@ class CategorieRepository extends ServiceEntityRepository
         $this->repositoryService = $repositoryService;
     }
 
+
+
     /**
      * Compte le nombre total de catégories.
      *
@@ -27,7 +29,26 @@ class CategorieRepository extends ServiceEntityRepository
      */
     public function countCategories(): int
     {
-        return $this->repositoryService->countEntities(Categorie::class, 'c');    
+        return $this->repositoryService->countEntities(Categorie::class, 'c','id');    
+    }
+
+
+
+     /**
+     * Compte le nombre de recettes dans une catégorie donnée
+     *
+     * @param int $categorieId L'identifiant de la catégorie
+     * @return int Le nombre de recettes
+     */
+    public function countRecettesInCategorie(int $categorieId): int
+    {
+        $qb = $this->createQueryBuilder('c')
+            ->select('COUNT(r.id)')
+            ->leftJoin('c.recettes', 'r') // Liaison avec l'entité Recette
+            ->where('c.id = :categorieId')
+            ->setParameter('categorieId', $categorieId);
+
+        return (int) $qb->getQuery()->getSingleScalarResult();
     }
 
 //    /**

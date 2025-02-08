@@ -1,45 +1,56 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
+<div class="container mt-4">
+    <h1 class="text-center mb-4">{{ titre }}</h1>
 
-<p> <a href="{{ path('categorie.new')}}">Ajouter</a></p>
-<table class="table table-striped">
-    <thead>
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <a href="{{ path('categorie.new') }}" class="btn btn-success">
+            <i class="fas fa-plus"></i> Ajouter une catégorie
+        </a>
+    </div>
 
-    <p>{{ nombreCategorie }} {{ secteur }}</p>
-        <tr>
-            <th>Nom</th>
-            <th>Statut</th>
-            <th>Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for categories in categorie %}
+    <table class="table table-hover shadow-sm">
+        <thead class="table-dark text-center">
             <tr>
-                <td> il y a : {{ categories.categorie }} </td>
-                <td>
-                    {% if categories.statutCategorie %}
-                        <span class="badge bg-success">Actif</span>
-                        <a href="{{ path('categorie.toggle_statut', { id: categories.id }) }}" class="btn btn-danger btn-sm">
-                            Désactiver
-                        </a>
-                    {% else %}
-                        <span class="badge bg-danger">Pause</span>
-                        <a href="{{ path('categorie.toggle_statut', { id: categories.id }) }}" class="btn btn-success btn-sm">
-                            Activer
-                        </a>
-                    {% endif %}
-                </td>
-                <td>
-                    <a href="{{ path('categorie.show', { id: categories.id }) }}" class="btn btn-primary btn-sm">Voir</a>
-                    <a href="{{ path('categorie.edit', { id: categories.id }) }}" class="btn btn-secondary btn-sm">Modifier</a>
-                </td>
+                <th>Nom</th>
+                <th>Statut</th>
+                <th>Actions</th>
             </tr>
-        {% else %}
-            <tr>
-                <td colspan="3" class="text-center">Aucune categorie trouvée.</td>
-            </tr>
-        {% endfor %}
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            {% for categorie in categories %}
+                <tr>
+                    <td class="align-middle text-center">{{ categorie.categorie }}</td>
+                    <td class="align-middle text-center">
+                        {% if categorie.statutCategorie %}
+                            <a href="{{ path('categorie.toggle_statut', { id: categorie.id }) }}" class="badge bg-success text-decoration-none">
+                                Actif
+                            </a>
+                        {% else %}
+                            <a href="{{ path('categorie.toggle_statut', { id: categorie.id }) }}" class="badge bg-danger text-decoration-none">
+                                Inactif
+                            </a>
+                        {% endif %}
+                    </td>
+                    <td class="d-flex justify-content-center gap-2">
+                        <a href="{{ path('categorie.show', { id: categorie.id }) }}" class="btn btn-primary btn-sm">
+                            <i class="fas fa-eye"></i> Voir
+                        </a>
+                        <a href="{{ path('categorie.edit', { id: categorie.id }) }}" class="btn btn-secondary btn-sm">
+                            <i class="fas fa-edit"></i> Modifier
+                        </a>
+                        <form action="{{ path('categorie.delete', { id: categorie.id }) }}" method="post" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cette catégorie ?');">
+                            {{ form(deleteForms[categorie.id]) }}
+                        </form>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="3" class="text-center text-muted">Aucune catégorie trouvée.</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
 {% endblock %}

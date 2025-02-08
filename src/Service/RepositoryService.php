@@ -13,10 +13,17 @@ class RepositoryService
         $this->entityManager = $entityManager;
     }
 
-    public function countEntities(string $entityClass, string $alias='e'): int
+    public function countEntities(string $entityClass, string $alias='e', string $a): int
     {
+
+       // $allowedFields = ['id', 'name', 'createdAt', 'updatedAt']; // Définir les champs autorisés
+      //  if (!in_array($a, $allowedFields, true)) {
+     //       throw new \InvalidArgumentException("Champ '$a' non valide !");
+      //  }
+    
+
         return (int) $this->entityManager->createQueryBuilder()
-            ->select("COUNT($alias.id)")
+            ->select("COUNT($alias.$a)")
             ->from($entityClass, $alias)
             ->getQuery()
             ->getSingleScalarResult();

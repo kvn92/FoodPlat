@@ -16,24 +16,32 @@ class CategorieType extends AbstractType
     {
         $builder
             ->add('categorie',TextType::class,[
-                'label'=>'Categorie','required'=>true,])
-            ->add('statutCategorie',ChoiceType::class,['label'=>'Statut',
+                'label'=>'Categorie','required'=>true,]);
+          
+          if($options['is_edit']){
+            $builder ->add('statutCategorie',ChoiceType::class,['label'=>'Statut',
             'choices'=>[
                 'Actif'=>true,'Pause'=>false
             ],
             'expanded'=>true,
             'multiple'=>false])
-            ->add('submit',SubmitType::class,[
-                'label'=>$options['boutonForm']?'Ajouter':'Modifier'
-                ])
+        
         ;
+          }     
+          $builder
+          ->add('submit',SubmitType::class,[
+            'label'=>'Enregistre'
+          ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'data_class' => Categorie::class,
-            'boutonForm'=>true
+            'is_edit'=>false,
+            'csrf_protection' => true, // ✅ Active la protection CSRF
+            'csrf_field_name' => '_token', 
+            'csrf_token_id' => 'difficulte_item',
         ]);
     }
 }

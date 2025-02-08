@@ -2,7 +2,7 @@
 # Files in the packages/ subdirectory configure your dependencies.
 
 parameters:
-
+     kernel.secret: '%env(APP_SECRET)%'
 services:
     # default configuration for services in *this* file
     _defaults:

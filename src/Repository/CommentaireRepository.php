@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Commentaire;
+use App\Service\RepositoryService;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -11,10 +12,20 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class CommentaireRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    private RepositoryService $repositoryService;
+
+    public function __construct(ManagerRegistry $registry,RepositoryService $repositoryService)
     {
         parent::__construct($registry, Commentaire::class);
+        $this->repositoryService = $repositoryService;
     }
+
+
+    public function countCommentaire(): int
+    {
+        return $this->repositoryService->countEntities(Commentaire::class, 'c','id');    
+    }
+
 
 //    /**
 //     * @return Commentaire[] Returns an array of Commentaire objects

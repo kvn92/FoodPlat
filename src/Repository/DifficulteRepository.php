@@ -29,7 +29,7 @@ class DifficulteRepository extends ServiceEntityRepository
      * @return int
      */
     public function countDifficulte(){
-        return $this->repositoryService->countEntities(Difficulte::class, 'd');    
+        return $this->repositoryService->countEntities(Difficulte::class, 'd','id');    
     }
     
 

@@ -1,0 +1,118 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Inscription{% endblock %}
+
+{% block body %}
+<div class="container">
+    <div class="form-container">
+        <h2>Créer un compte</h2>
+
+        {% if error %}
+            <p class="error">{{ error }}</p>
+        {% endif %}
+
+        {{ form_start(registrationForm) }}
+
+             <div class="form-group">
+                {{ form_label(registrationForm.pseudo) }}
+                {{ form_widget(registrationForm.pseudo, {'attr': {'class': 'input-field'}}) }}
+            </div>
+
+            <div class="form-group">
+                {{ form_label(registrationForm.email) }}
+                {{ form_widget(registrationForm.email, {'attr': {'class': 'input-field'}}) }}
+            </div>
+
+            <div class="form-group">
+                {{ form_label(registrationForm.plainPassword) }}
+                {{ form_widget(registrationForm.plainPassword, {'attr': {'class': 'input-field'}}) }}
+            </div>
+
+  
+            <div class="form-group">
+                {{ form_row(registrationForm.agreeTerms) }}
+            </div>
+
+            <button type="submit" class="submit-btn">S'inscrire</button>
+        {{ form_end(registrationForm) }}
+
+        <p class="login-link">Déjà un compte ? <a href="{{ path('login') }}">Connectez-vous</a></p>
+    </div>
+</div>
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background: url("https://source.unsplash.com/1600x900/?food,cooking") no-repeat center center fixed;
+        background-size: cover;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+    }
+
+    .container {
+        width: 100%;
+        max-width: 400px;
+        padding: 20px;
+        background: rgba(255, 255, 255, 0.9);
+        border-radius: 10px;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+        text-align: center;
+    }
+
+    .form-container h2 {
+        color: #333;
+        margin-bottom: 15px;
+    }
+
+    .form-group {
+        margin-bottom: 15px;
+        text-align: left;
+    }
+
+    .input-field {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        font-size: 16px;
+    }
+
+    .submit-btn {
+        background-color: #e67e22;
+        color: white;
+        border: none;
+        padding: 10px 15px;
+        border-radius: 5px;
+        cursor: pointer;
+        width: 100%;
+        font-size: 16px;
+    }
+
+    .submit-btn:hover {
+        background-color: #d35400;
+    }
+
+    .error {
+        color: red;
+        font-weight: bold;
+    }
+
+    .login-link {
+        margin-top: 10px;
+        font-size: 14px;
+    }
+
+    .login-link a {
+        color: #e67e22;
+        text-decoration: none;
+    }
+
+    .login-link a:hover {
+        text-decoration: underline;
+    }
+</style>
+{% endblock %}

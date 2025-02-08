@@ -4,8 +4,11 @@ namespace App\Form;
 
 use App\Entity\Categorie;
 use App\Entity\Difficulte;
+use App\Entity\Ingredient;
+use App\Entity\Pays;
 use App\Entity\Recette;
 use App\Entity\TypeRepas;
+use App\Entity\Viande;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
@@ -32,13 +35,28 @@ class RecetteType extends AbstractType
                 'placeholder'=>'Choisir',
                 'choice_label'=>'difficulte',
             ])
+            ->add('pays',EntityType::class,[
+                'class'=> Pays::class,
+                'placeholder'=>'Choisir',
+                'choice_label'=>'nomPays',
+            ])
+            ->add('ingredient',EntityType::class,[
+                'class'=> Ingredient::class,
+                'placeholder'=>'Choisir',
+                'choice_label'=>'nomIngredient',
+            ])
+            ->add('viande',EntityType::class,[
+                'class'=> Viande::class,
+                'placeholder'=>'Choisir',
+                'choice_label'=>'nomViande',
+            ])
             ->add('typeRepas',EntityType::class,[
                 'class'=>TypeRepas::class,
                 'placeholder'=>'choisir',
                 'choice_label'=>'typeRepas'
                 ])
             ->add('photoRecette',FileType::class,[
-                'required'=>true,
+                'required'=>false,
                 'mapped'=>false,'constraints'=>[new Image(
                     
                 )]])
@@ -54,6 +72,9 @@ class RecetteType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Recette::class,
+            'csrf_protection' => true, // ✅ Active la protection CSRF
+        'csrf_field_name' => '_token', 
+        'csrf_token_id' => 'recette_item',
         ]);
     }
 }

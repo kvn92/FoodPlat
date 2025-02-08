@@ -16,18 +16,20 @@ class TypeRepasType extends AbstractType
     {
         $builder
         ->add('typeRepas',TextType::class,['label'=>'Type de Repas',
-        'required'=>true,])
-        ->add('statutTypeRepas',ChoiceType::class,['label'=>'Statuts',
-            'choices'=>[
-                'Actif'=>true,
-                'Pause'=>false,
-            ],'expanded'=>true,
-            'multiple'=>false
-            ])
+        'required'=>true,]);
+       if($options['is_edit']){
+        $builder->add('statutTypeRepas',ChoiceType::class,['label'=>'Statuts',
+        'choices'=>[
+            'Actif'=>true,
+            'Pause'=>false,
+        ],'expanded'=>true,
+        'multiple'=>false
+    ]);
+       }
+       
 
-        ->add('submit',SubmitType::class,[
-            'label'=>$options['boutonForm']?
-            'Ajouter':'Modifier'])
+       $builder ->add('submit',SubmitType::class,[
+            'label'=>'Enregistre']);
     ;
 }
 
@@ -35,7 +37,10 @@ public function configureOptions(OptionsResolver $resolver): void
 {
     $resolver->setDefaults([
         'data_class' => TypeRepas::class,
-        'boutonForm'=>true
+        'is_edit'=>false,
+        'csrf_protection' => false, // ✅ Active la protection CSRF
+        'csrf_field_name' => '_token', 
+        'csrf_token_id' => 'typeRepas_item',
     ]);
 }
 }

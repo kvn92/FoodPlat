@@ -30,7 +30,7 @@ class TypeRepasRepository extends ServiceEntityRepository
      */
     public function countTypeRepas(): int
     {
-        return $this->repositoryService->countEntities(TypeRepas::class, 't');    
+        return $this->repositoryService->countEntities(TypeRepas::class, 't','id');    
     }
 
 //    /**

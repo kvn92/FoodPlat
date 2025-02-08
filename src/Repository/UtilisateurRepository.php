@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Utilisateur;
+use App\Service\RepositoryService;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
@@ -14,9 +15,14 @@ use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
  */
 class UtilisateurRepository extends ServiceEntityRepository implements PasswordUpgraderInterface
 {
-    public function __construct(ManagerRegistry $registry)
+
+    private RepositoryService $repositoryService;
+
+
+    public function __construct(ManagerRegistry $registry, RepositoryService $repositoryService)
     {
         parent::__construct($registry, Utilisateur::class);
+        $this->repositoryService = $repositoryService;
     }
 
     /**
@@ -32,6 +38,12 @@ class UtilisateurRepository extends ServiceEntityRepository implements PasswordU
         $this->getEntityManager()->persist($user);
         $this->getEntityManager()->flush();
     }
+
+    public function countUtilisateur(){
+        return $this->repositoryService->countEntities(Utilisateur::class,'u','id');
+    }
+
+
 
 //    /**
 //     * @return Utilisateur[] Returns an array of Utilisateur objects

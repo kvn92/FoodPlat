@@ -1,0 +1,23 @@
+service: 
+  web:
+    build:  
+    ports:
+      -"8000:5000"
+    redis:
+      image: "redis:apline"
+
+
+
+       jenkins:
+        container_name: "jenkin"
+        ports:
+          - "8080:8080"
+          - "5000:500"
+        image: "jenkins/jenkins:lts-jdk17"
+
+        matrix:
+          container_name: "matrix"
+          ports:
+            - "8043:3400"
+            - "5000:3244"
+          image: "matrix"
