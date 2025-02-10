@@ -8,25 +8,29 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: FavoriRepository::class)]
 class Favori
 {
+    // === ATTRIBUTS PRINCIPAUX ===
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type:'integer',name:'id_favori')]
-    private ?int $idFavorie = null;
+    #[ORM\Column(type: 'integer', name: 'id_favori')]
+    private ?int $id = null;
 
-    #[ORM\ManyToOne(targetEntity:Utilisateur::class,inversedBy: 'favoris')]
-    #[ORM\JoinColumn(name: "utilisateur_id", referencedColumnName: "id_utilisateur")] // 🔥 Assurez-vous de mettre le bon nom
+    // === RELATIONS ===
+    #[ORM\ManyToOne(targetEntity: Utilisateur::class, inversedBy: 'favoris')]
+    #[ORM\JoinColumn(name: "utilisateur_id", referencedColumnName: "id_utilisateur", nullable: false)]
     private ?Utilisateur $utilisateur = null;
 
-
     #[ORM\ManyToOne(targetEntity: Recette::class, inversedBy: "favoris")]
-    #[ORM\JoinColumn(name:'recette_id' ,referencedColumnName: "id_recette", onDelete: "CASCADE")]
+    #[ORM\JoinColumn(name: "recette_id", referencedColumnName: "id_recette", onDelete: "CASCADE", nullable: false)]
     private ?Recette $recette = null;
 
+    // === ATTRIBUT SUPPLÉMENTAIRE ===
+    #[ORM\Column(type: 'boolean')]
     private bool $isFavori = true; // Par défaut, favori actif
 
+    // === GETTERS & SETTERS ===
     public function getId(): ?int
     {
-        return $this->idFavorie;
+        return $this->id;
     }
 
     public function getUtilisateur(): ?Utilisateur
@@ -37,7 +41,6 @@ class Favori
     public function setUtilisateur(?Utilisateur $utilisateur): static
     {
         $this->utilisateur = $utilisateur;
-
         return $this;
     }
 
@@ -49,7 +52,6 @@ class Favori
     public function setRecette(?Recette $recette): static
     {
         $this->recette = $recette;
-
         return $this;
     }
 
@@ -58,7 +60,7 @@ class Favori
         return $this->isFavori;
     }
 
-    public function setFavori(bool $isFavori): self
+    public function setIsFavori(bool $isFavori): self
     {
         $this->isFavori = $isFavori;
         return $this;

@@ -1,0 +1,171 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Tableau de Bord Administrateur{% endblock %}
+
+{% block body %}
+    <main class="admin-container">
+        <header>
+            <h1 class="admin-title">Tableau de Bord</h1>
+        </header>
+
+        <section class="admin-dashboard">
+            <!-- Membre -->
+            <article class="admin-card admin-card-blue">
+                <a href="{{ path('admin.index') }}">
+                    <i class="fas fa-users"></i>
+                    <h3>Membres</h3>
+                    <p>Gérer les utilisateurs inscrits</p>
+                </a>
+            </article>
+
+            <!-- Recette -->
+            <article class="admin-card admin-card-green">
+                <a href="{{ path('recette.index') }}">
+                    <i class="fas fa-utensils"></i>
+                    <h3>Recettes</h3>
+                    <p>Modérer et valider les recettes</p>
+                </a>
+            </article>
+
+            <!-- Paramètres -->
+            <article class="admin-card admin-card-orange">
+                <a href="{{ path('recette.index') }}">
+                    <i class="fas fa-cogs"></i>
+                    <h3>Paramètres</h3>
+                    <p>Configurer la plateforme</p>
+                </a>
+            </article>
+
+            <!-- Alertes -->
+            <article class="admin-card admin-card-red">
+                <a href="{{ path('recette.index') }}">
+                    <i class="fas fa-bell"></i>
+                    <h3>Alertes</h3>
+                    <p>Voir les signalements et notifications</p>
+                </a>
+            </article>
+
+            <!-- Contact -->
+            <article class="admin-card admin-card-purple">
+                <a href="{{ path('recette.index') }}">
+                    <i class="fas fa-envelope"></i>
+                    <h3>Messages</h3>
+                    <p>Consulter les demandes de contact</p>
+                </a>
+            </article>
+        </section>
+    </main>
+{% endblock %}
+
+{% block stylesheets %}
+    <style>
+        /* ========== CONTAINER PRINCIPAL ========== */
+        .admin-container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 20px;
+            text-align: center;
+        }
+
+        /* ========== TITRE PRINCIPAL ========== */
+        .admin-title {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #2c3e50;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 30px;
+            position: relative;
+            display: inline-block;
+        }
+
+        .admin-title::after {
+            content: '';
+            width: 60px;
+            height: 4px;
+            background-color: #3498db;
+            display: block;
+            margin: 8px auto 0;
+            border-radius: 4px;
+        }
+
+        /* ========== GRILLE DU TABLEAU DE BORD ========== */
+        .admin-dashboard {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            justify-content: center;
+        }
+
+        /* ========== CARDS DU TABLEAU DE BORD ========== */
+        .admin-card {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 25px;
+            height: 180px;
+            border-radius: 15px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+        }
+
+        .admin-card a {
+            text-decoration: none;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+        }
+
+        .admin-card i {
+            font-size: 45px;
+            margin-bottom: 10px;
+            transition: transform 0.3s;
+        }
+
+        .admin-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+        }
+
+        .admin-card p {
+            font-size: 0.9rem;
+            font-weight: normal;
+            opacity: 0.9;
+        }
+
+        /* Effet hover */
+        .admin-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .admin-card:hover i {
+            transform: scale(1.1);
+        }
+
+        /* Dégradés de fond pour les cartes */
+        .admin-card-blue { background: linear-gradient(135deg, #3498db, #2980b9); } /* Bleu */
+        .admin-card-green { background: linear-gradient(135deg, #2ecc71, #27ae60); } /* Vert */
+        .admin-card-orange { background: linear-gradient(135deg, #e67e22, #d35400); } /* Orange */
+        .admin-card-red { background: linear-gradient(135deg, #e74c3c, #c0392b); } /* Rouge */
+        .admin-card-purple { background: linear-gradient(135deg, #9b59b6, #8e44ad); } /* Violet */
+
+        /* ========== RESPONSIVE DESIGN ========== */
+        @media (max-width: 768px) {
+            .admin-dashboard {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .admin-dashboard {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+{% endblock %}

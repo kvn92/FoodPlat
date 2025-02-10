@@ -14,7 +14,7 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-#[Route('/admin', name: 'admin.')]
+#[Route('/utilitsateur', name: 'utilitsateur.')]
 
 class UtilisateurController extends AbstractController
 {

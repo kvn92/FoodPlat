@@ -1,34 +1,32 @@
 security:
-    # https://symfony.com/doc/current/security.html#registering-the-user-hashing-passwords
     password_hashers:
         Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface: 'auto'
-    # https://symfony.com/doc/current/security.html#loading-the-user-the-user-provider
+
     providers:
-        # used to reload user from session & other features (e.g. switch_user)
         app_user_provider:
             entity:
                 class: App\Entity\Utilisateur
                 property: email
+
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
+
         main:
             lazy: true
             provider: app_user_provider
-            form_login:
-                login_path: login
-                check_path: login
-                enable_csrf: true
+            entry_point: App\Security\LoginFormAuthenticator  # ✅ Définit l'authenticator personnalisé
+            custom_authenticators:
+                - App\Security\LoginFormAuthenticator  # ✅ Utilisation correcte
             logout:
                 path: logout
-                # where to redirect after logout
                 target: login
 
-            remember_me:
-                secret: '%kernel.secret%'  # 🔐 Clé secrète pour chiffrer le cookie
-                lifetime: 604800  # ⏳ Durée (7 jours en secondes)
-                path: /  # 🌍 Valide pour tout le site
+            remember_me:  # ✅ Correction de remember_me
+                secret: '%kernel.secret%'
+                lifetime: 604800
+                path: /
                 always_remember_me: false
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#the-firewall

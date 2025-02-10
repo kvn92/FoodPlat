@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Form;
 
@@ -16,19 +17,25 @@ class ContactType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('name',TextType::class,[
-                'empty_data'=>''
+            ->add('name', TextType::class, [
+                'label' => 'Votre nom',
+                'empty_data' => '',
+                'attr' => ['placeholder' => 'Entrez votre nom', 'class' => 'form-control'],
             ])
-            ->add('email',EmailType::class,[
-                'empty_data'=>''
-                ])
-            ->add('message',TextareaType::class,[
-                'empty_data'=>''
+            ->add('email', EmailType::class, [
+                'label' => 'Votre email',
+                'empty_data' => '',
+                'attr' => ['placeholder' => 'Entrez votre email', 'class' => 'form-control'],
             ])
-            ->add('submit',SubmitType::class,[
-                'label'=>'Envoiez'
-                ])
-        ;
+            ->add('message', TextareaType::class, [
+                'label' => 'Votre message',
+                'empty_data' => '',
+                'attr' => ['placeholder' => 'Écrivez votre message...', 'class' => 'form-control', 'rows' => 5],
+            ])
+            ->add('submit', SubmitType::class, [
+                'label' => 'Envoyer',
+                'attr' => ['class' => 'btn btn-primary w-100 mt-3'],
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

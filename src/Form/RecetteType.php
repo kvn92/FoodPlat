@@ -9,8 +9,15 @@ use App\Entity\Pays;
 use App\Entity\Recette;
 use App\Entity\TypeRepas;
 use App\Entity\Viande;
+use App\Enum\CategorieEnum;
+use App\Enum\DifficulterEnum;
+use App\Enum\IngredientEnum;
+use App\Enum\PaysEnum;
+use App\Enum\RepasEnum;
+use App\Enum\ViandeEnum;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -25,36 +32,10 @@ class RecetteType extends AbstractType
     {
         $builder
             ->add('titreRecette',TextType::class,['label'=>'Titre'])
-            ->add('categorie', EntityType::class, [
-                'class' => Categorie::class,
-                'placeholder'=>'Choisir',
-                'choice_label' => 'categorie',
-            ])
-            ->add('difficulte',EntityType::class,[
-                'class'=> Difficulte::class,
-                'placeholder'=>'Choisir',
-                'choice_label'=>'difficulte',
-            ])
-            ->add('pays',EntityType::class,[
-                'class'=> Pays::class,
-                'placeholder'=>'Choisir',
-                'choice_label'=>'nomPays',
-            ])
-            ->add('ingredient',EntityType::class,[
-                'class'=> Ingredient::class,
-                'placeholder'=>'Choisir',
-                'choice_label'=>'nomIngredient',
-            ])
-            ->add('viande',EntityType::class,[
-                'class'=> Viande::class,
-                'placeholder'=>'Choisir',
-                'choice_label'=>'nomViande',
-            ])
-            ->add('typeRepas',EntityType::class,[
-                'class'=>TypeRepas::class,
-                'placeholder'=>'choisir',
-                'choice_label'=>'typeRepas'
-                ])
+
+ 
+ 
+
             ->add('photoRecette',FileType::class,[
                 'required'=>false,
                 'mapped'=>false,'constraints'=>[new Image(
@@ -65,6 +46,62 @@ class RecetteType extends AbstractType
                 'label'=>'Durée',
                 'required'=>true])
             ->add('submit',SubmitType::class,['label'=>'Ajoute'])
+
+            ->add('pays', ChoiceType::class, [
+                'choices' => PaysEnum::cases(),
+                'choice_label' => fn(PaysEnum $choice) => $choice->name, // Affichage du nom
+                'choice_value' => fn(?PaysEnum $choice) => $choice?->value, // Stocke la valeur de l'ENUM
+                'expanded' => false,
+                'multiple' => false,
+                'label' => 'Pays d’origine',
+                'data' => $options['data']->getPays()?->value, // Définit la valeur par défaut
+            ])
+
+            ->add('categorie', ChoiceType::class, [
+                'choices' => CategorieEnum::cases(),
+                'choice_label' => fn(CategorieEnum $choice) => $choice->name, // Affichage du nom
+                'choice_value' => fn(?CategorieEnum $choice) => $choice?->value, // Stocke la valeur de l'ENUM
+                'expanded' => false,
+                'multiple' => false,
+                'label' => 'Categorie',
+                'data' => $options['data']->getCategorie()?->value, // Définit la valeur par défaut
+            ])
+            ->add('difficulte', ChoiceType::class, [
+                'choices' => DifficulterEnum::cases(),
+                'choice_label' => fn(DifficulterEnum $choice) => $choice->name, // Affichage du nom
+                'choice_value' => fn(?DifficulterEnum $choice) => $choice?->value, // Stocke la valeur de l'ENUM
+                'expanded' => false,
+                'multiple' => false,
+                'label' => 'Niveau',
+                'data' => $options['data']->getDifficulte(), // Définit la valeur par défaut
+            ])
+            ->add('ingredient', ChoiceType::class, [
+                'choices' => IngredientEnum::cases(),
+                'choice_label' => fn(IngredientEnum $choice) => $choice->name, // Affichage du nom
+                'choice_value' => fn(?IngredientEnum $choice) => $choice?->value, // Stocke la valeur de l'ENUM
+                'expanded' => false,
+                'multiple' => false,
+                'label' => 'Ingredient',
+                'data' => $options['data']->getIngredient()?->value, // Définit la valeur par défaut
+            ])
+            ->add('repas', ChoiceType::class, [
+                'choices' => RepasEnum::cases(),
+                'choice_label' => fn(RepasEnum $choice) => $choice->name, // Affichage du nom
+                'choice_value' => fn(?RepasEnum $choice) => $choice?->value, // Stocke la valeur de l'ENUM
+                'expanded' => false,
+                'multiple' => false,
+                'label' => 'Repas',
+                'data' => $options['data']->getRepas()?->value, // Définit la valeur par défaut
+            ])
+            ->add('Viande', ChoiceType::class, [
+                'choices' => ViandeEnum::cases(),
+                'choice_label' => fn(ViandeEnum $choice) => $choice->name, // Affichage du nom
+                'choice_value' => fn(?ViandeEnum $choice) => $choice?->value, // Stocke la valeur de l'ENUM
+                'expanded' => false,
+                'multiple' => false,
+                'label' => 'Viande',
+                'data' => $options['data']->getViande()?->value, // Définit la valeur par défaut
+            ])
         ;
     }
 

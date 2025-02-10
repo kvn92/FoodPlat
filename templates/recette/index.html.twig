@@ -30,13 +30,12 @@
                 <tr>
                     <td class="align-middle text-center">{{ recette.titreRecette }}</td>
                     <td class="align-middle text-center">
-                        {{ recette.categorie ? recette.categorie.categorie : 'Non spécifiée' }}
+    {{ recette.categorie ? recette.categorie.name|capitalize : 'Non spécifiée' }}                    </td>
+                    <td class="align-middle text-center">
+                        {{ recette.repas ? recette.repas.name|capitalize : 'Non spécifié' }}
                     </td>
                     <td class="align-middle text-center">
-                        {{ recette.typeRepas ? recette.typeRepas.typeRepas : 'Non spécifié' }}
-                    </td>
-                    <td class="align-middle text-center">
-                        {{ recette.difficulte ? recette.difficulte.difficulte : 'Non spécifiée' }}
+                        {{ recette.difficulte ? recette.difficulte.name|capitalize : 'Non spécifiée' }}
                     </td>
                     <td class="align-middle text-center">{{ recette.duree }}</td>
                     <td class="align-middle text-center">

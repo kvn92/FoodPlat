@@ -1,0 +1,57 @@
+<footer class="footer">
+    <div class="container">
+        <div class="row justify-content-center">
+            <!-- Logo -->
+            <section class="col-md-3 text-center">
+                <img id="zdance-logo-footer" src="{{ asset('images/logo/logo_zdance_footer.jpg') }}" alt="ZDance">
+            </section>
+
+            <!-- Réseaux sociaux -->
+            <section class="col-md-3 text-center">
+                <h2 class="footer-title">Restez connectés</h2>
+                <nav id="footer-reseaux-sociaux">
+                    <ul class="list-unstyled d-flex justify-content-center">
+                        <li>
+                            <a href="https://www.instagram.com/zdance_78/" target="_blank">
+                                <img src="{{ asset('images/ico/instagram.png') }}" alt="Instagram">
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.facebook.com/Zdance78/" target="_blank">
+                                <img src="{{ asset('images/ico/facebook.png') }}" alt="Facebook">
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.youtube.com/channel/UClmvnvGODAtgukZCXcL8l_Q" target="_blank">
+                                <img src="{{ asset('images/ico/youtube.png') }}" alt="YouTube">
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </section>
+
+            <!-- Mentions légales et contact -->
+            <section class="col-md-3 text-center">
+                <h2 class="footer-title">Informations</h2>
+                <nav id="footer-links">
+                    <ul class="list-unstyled">
+                        <li><a href="#">Mentions Légales</a></li>
+                        <li><a href="#">Nous contacter</a></li>
+                    </ul>
+                </nav>
+            </section>
+        </div>
+
+        <!-- Ligne de séparation bien centrée -->
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <hr class="footer-divider">
+            </div>
+        </div>
+
+        <!-- Copyright -->
+        <article class="text-center">
+            <p class="mb-0">© {{ "now"|date("Y") }} ZDance - Tous droits réservés</p>
+        </article>
+    </div>
+</footer>

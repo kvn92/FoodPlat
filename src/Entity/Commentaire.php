@@ -8,52 +8,52 @@ use DateTimeZone;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Validator\Constraints\IsFalse;
-use Symfony\Component\Validator\Constraints\NotBlank;
 
 #[ORM\Entity(repositoryClass: CommentaireRepository::class)]
 class Commentaire
 {
+    // === ATTRIBUTS PRINCIPAUX ===
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type:'integer',name:'id_commentaire')]
-    private ?int $idCommentaire = null;
+    #[ORM\Column(type: 'integer', name: 'id_commentaire')]
+    private ?int $id = null;
 
-    #[ORM\Column(Types::TEXT,length:300)]
-    #[NotBlank]
+    #[ORM\Column(type: Types::TEXT, length: 300)]
+    #[Assert\NotBlank(message: 'Le commentaire ne peut pas être vide.')]
     #[Assert\Length(
-        min:3,
-        max:300,
-        minMessage: 'Votre titre doit comporter au moins {{ limit }} caractères.',
-        maxMessage: 'Votre titre ne peut pas contenir plus de {{ limit }} caractères.'
+        min: 3,
+        max: 300,
+        minMessage: 'Votre commentaire doit comporter au moins {{ limit }} caractères.',
+        maxMessage: 'Votre commentaire ne peut pas contenir plus de {{ limit }} caractères.'
     )]
     private ?string $commentaire = null;
 
-    #[ORM\Column( type:'boolean',nullable: true)]
-    #[IsFalse()]
-    private ?bool $statutCommentaire = null;
+    #[ORM\Column(type: 'boolean')]
+    private bool $statutCommentaire = false;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $dateCommentaire = null;
 
-   
+    // === RELATIONS ===
     #[ORM\ManyToOne(inversedBy: 'commentaires')]
-    #[ORM\JoinColumn(name: "recette_id", referencedColumnName: "id_recette")]
+    #[ORM\JoinColumn(name: "recette_id", referencedColumnName: "id_recette", nullable: false)]
     private ?Recette $recette = null;
 
     #[ORM\ManyToOne(inversedBy: 'commentaires')]
-    #[ORM\JoinColumn(name: "utilisateur_id", referencedColumnName: "id_utilisateur")]
+    #[ORM\JoinColumn(name: "utilisateur_id", referencedColumnName: "id_utilisateur", nullable: false)]
     private ?Utilisateur $utilisateur = null;
 
+    // === CONSTRUCTEUR ===
     public function __construct()
     {
         $this->statutCommentaire = false;
-        $this->dateCommentaire = new DateTime('now', new \DateTimeZone('Europe/Paris'));
+        $this->dateCommentaire = new DateTime('now', new DateTimeZone('Europe/Paris'));
     }
 
+    // === GETTERS & SETTERS ===
     public function getId(): ?int
     {
-        return $this->idCommentaire;
+        return $this->id;
     }
 
     public function getCommentaire(): ?string
@@ -63,20 +63,18 @@ class Commentaire
 
     public function setCommentaire(string $commentaire): static
     {
-        $this->commentaire = $commentaire;
-
+        $this->commentaire = trim($commentaire);
         return $this;
     }
 
-    public function isStatutCommentaire(): ?bool
+    public function isStatutCommentaire(): bool
     {
         return $this->statutCommentaire;
     }
 
-    public function setStatutCommentaire(?bool $statutCommentaire): static
+    public function setStatutCommentaire(bool $statutCommentaire): static
     {
         $this->statutCommentaire = $statutCommentaire;
-
         return $this;
     }
 
@@ -85,10 +83,9 @@ class Commentaire
         return $this->dateCommentaire;
     }
 
-    public function setDateCommentaire(?\DateTimeInterface $dateCommentaire): static
+    public function setDateCommentaire(\DateTimeInterface $dateCommentaire): static
     {
         $this->dateCommentaire = $dateCommentaire;
-
         return $this;
     }
 
@@ -100,7 +97,6 @@ class Commentaire
     public function setRecette(?Recette $recette): static
     {
         $this->recette = $recette;
-
         return $this;
     }
 
@@ -112,8 +108,6 @@ class Commentaire
     public function setUtilisateur(?Utilisateur $utilisateur): static
     {
         $this->utilisateur = $utilisateur;
-
         return $this;
     }
-
 }

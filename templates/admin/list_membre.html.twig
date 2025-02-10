@@ -1,0 +1,72 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<main class="container mt-4">
+    <header class="text-center mb-4">
+        <h1>{{ titre }}</h1>
+    </header>
+
+    <section class="mb-3 d-flex justify-content-between align-items-center">
+        <a href="{{ path('admin.new') }}" class="btn btn-success">
+            <i class="fas fa-plus"></i> Ajouter une catégorie
+        </a>
+    </section>
+
+    <section>
+        <table class="table table-hover shadow-sm">
+            <thead class="table-dark text-center">
+                <tr>
+                    <th scope="col">Pseudo</th>
+                    <th scope="col">Statut</th>
+                    <th scope="col">Role</th>
+                    <th scope="col">Incription</th>
+
+
+                    <th scope="col">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for admin in admins %}
+                    <tr>
+                        <td class="align-middle text-center">{{ admin.pseudo }}</td>
+                        <td class="align-middle text-center">
+                            <a href="{{ path('admin.toggle_statut', { id: admin.id }) }}" class="status-badge {{ admin.statutUtilisateur ? 'active' : 'inactive' }}">
+                                {{ admin.statutUtilisateur ? 'Actif' : 'Inactif' }}
+                            </a>
+                        </td>
+                        <td> {{ admin.roles | join(', ') }}</td>
+                        <td>{{ admin.dateInscription | date( 'd/m/Y') }}</td>
+                        <td class="align-middle text-center">
+                            <nav class="action-buttons">
+                                <a href="{{ path('admin.show', { id: admin.id }) }}" class="btn btn-primary">
+                                    <i class="fas fa-eye"></i> Voir
+                                </a>
+                                <a href="{{ path('admin.edit', { id: admin.id }) }}" class="btn btn-secondary">
+                                    <i class="fas fa-edit"></i> Modifier
+                                </a>
+                                <form action="{{ path('admin.delete', { id: admin.id }) }}" method="post" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cette catégorie ?');">
+                                    {{ form(deleteForms[admin.id]) }}
+                                   
+                                </form>
+                            </nav>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="3" class="text-center text-muted">Aucune catégorie trouvée.</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="3" class="text-center text-muted">Total : {{ admins|length }} catégories</td>
+                </tr>
+            </tfoot>
+        </table>
+    </section>
+</main>
+{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/custom-buttons.css') }}">
+{% endblock %}

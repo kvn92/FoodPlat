@@ -3,39 +3,47 @@
 {% block title %}Connexion | Cuisine{% endblock %}
 
 {% block body %}
-<div class="container">
-    <div class="login-box">
-        <h2>Connexion</h2>
+<main class="container">
+    <section class="login-box">
+        <header>
+            <h2>Connexion</h2>
+        </header>
 
-   <p class="error">{{ error }}</p>
+        {% if error %}
+            <p class="error">{{ error }}</p>
+        {% endif %}
 
         <form method="post">
-            <label for="username">Email</label>
-            <input type="email" value="{{ last_username }}" name="_username" id="username" required>
+            <fieldset>
+                <legend>Identifiez-vous</legend>
 
-            <label for="password">Mot de passe</label>
-            <input type="password" name="_password" id="password" required>
+                <label for="username">Email</label>
+                <input type="email" value="{{ last_username }}" name="_username" id="username" required>
 
-            <!-- Checkbox bien aligné avec le label -->
-            <div class="remember-me">
-                <input type="checkbox" name="_remember_me" id="remember_me" class="form-check-input">
-                <label for="remember_me">Se souvenir de moi</label>
-            </div>
+                <label for="password">Mot de passe</label>
+                <input type="password" name="_password" id="password" required>
 
-            <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+                <!-- Checkbox bien aligné avec le label -->
+                <div class="remember-me">
+                    <input type="checkbox" name="_remember_me" id="remember_me" class="form-check-input">
+                    <label for="remember_me">Se souvenir de moi</label>
+                </div>
 
-            <button type="submit">Se connecter</button>
+                <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+                <button type="submit">Se connecter</button>
+            </fieldset>
         </form>
 
-        <div class="links">
-            <a href="{{ path('logout') }}">Mot de passe oublié ?</a>
+        <nav class="login-links">
+            <a href="{{ path('reset_password') }}">Mot de passe oublié ?</a>
             <a href="{{ path('register') }}">Créer un compte</a>
-        </div>
-    </div>
-</div>
+        </nav>
+    </section>
+</main>
 
 <style>
-    /* Style global */
+    /* ======= Style Global ======= */
     * {
         margin: 0;
         padding: 0;
@@ -62,7 +70,7 @@
         z-index: -1;
     }
 
-    /* Conteneur centré */
+    /* ======= Conteneur principal ======= */
     .container {
         display: flex;
         justify-content: center;
@@ -70,7 +78,7 @@
         height: 100vh;
     }
 
-    /* Boîte de connexion */
+    /* ======= Boîte de connexion ======= */
     .login-box {
         background: rgba(255, 255, 255, 0.9);
         padding: 20px;
@@ -80,11 +88,21 @@
         text-align: center;
     }
 
-    .login-box h2 {
+    .login-box header h2 {
         margin-bottom: 20px;
     }
 
     /* Champs de formulaire */
+    fieldset {
+        border: none;
+    }
+
+    legend {
+        font-size: 1.1rem;
+        font-weight: bold;
+        margin-bottom: 10px;
+    }
+
     label {
         display: block;
         text-align: left;
@@ -119,7 +137,7 @@
         font-weight: normal;
     }
 
-    /* Style du bouton */
+    /* ======= Style du bouton ======= */
     button {
         width: 100%;
         padding: 10px;
@@ -129,18 +147,19 @@
         border-radius: 5px;
         cursor: pointer;
         font-size: 16px;
+        transition: background-color 0.3s;
     }
 
     button:hover {
         background-color: #cc5500;
     }
 
-    /* Liens */
-    .links {
+    /* ======= Liens ======= */
+    .login-links {
         margin-top: 15px;
     }
 
-    .links a {
+    .login-links a {
         display: block;
         color: #333;
         text-decoration: none;
@@ -148,15 +167,22 @@
         margin-top: 5px;
     }
 
-    .links a:hover {
+    .login-links a:hover {
         color: #ff6600;
     }
 
-    /* Message d'erreur */
+    /* ======= Message d'erreur ======= */
     .error {
         color: red;
         margin-bottom: 15px;
         font-size: 14px;
+    }
+
+    /* ======= Responsive ======= */
+    @media (max-width: 480px) {
+        .login-box {
+            width: 90%;
+        }
     }
 </style>
 {% endblock %}
